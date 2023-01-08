@@ -1,5 +1,5 @@
-#include <iostream>
 #include <map>
+#include <iostream>
 #include <typeinfo>
 #include <fstream>
 #include <string>
@@ -156,12 +156,12 @@ int main () {
    		int pri = findPrior(itr->second); 
 		tripSum += pri;
    	} 
-	
+
+
 	//print results
 	cout << "Size of groups: " + to_string(groups.size()) << endl;
 	cout << "size of elfPacks: " + to_string(elfPacks.size()) << endl;
 	cout << "Sum of duplicates: " + to_string(dupSum) << endl;
 	cout << "Sum of triplets: " + to_string(tripSum) << endl;
-
 	return 0;
 }
