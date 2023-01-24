@@ -20,7 +20,8 @@ def formatGame(gameLines):
 			continue
 
 		elif '[' in line:
-			rows.append(line)
+			row = [*line]
+			rows.append(row)
 			rowCnt += 1
 
 		elif line[1] == '1':
@@ -37,11 +38,52 @@ def formatGame(gameLines):
 			l.pop(2)
 			rules.append(l)
 
-		print("RULES")
-		for rule in rules:
-			print(rule)
+	rowUnits = []	
+	fullUnits = []
+
+	for r in rows:
+		unit = int(int(len(r)) / int(len(cols)))
+		rowUnits = [r[x:x+unit] for x in range(0,len(r),unit)]
+		fullUnits.append(rowUnits)
+	
+	myStrs = []
+	for x in fullUnits: 
+		items = ['*']*len(cols) 
+		cnt = 0
+		for y in x:
+			for m in y:
+				if m != ' ' and m != '[' and m != ']' and m != '\n':
+					items[cnt] = m
+			cnt += 1
+		myStrs.append(items)
+				
+	return rules, myStrs
 		
-		print("ROWS")
-		for r in rows:
-			print(r)
-formatGame(lines)
+def createCols(board):
+	myCols = {} 
+	cnt = 1
+	for x in range(len(board[0])):
+		col = []
+		for b in board:
+			col.append(b[x])	
+			if '*' in col:
+				col.remove('*')
+		myCols[cnt] = col
+		cnt += 1
+	return myCols
+
+def move(cols, rules):
+	for r in rules:
+		size = int(r[0])
+		froCol = int(r[1])
+		toCol = int(r[2])
+
+		f = cols.get(froCol)
+		t = cols.get(toCol)
+		
+
+rules,board = formatGame(lines)
+myCols = createCols(board)
+for m,t in myCols.items():
+	print(m)
+	print(t)
