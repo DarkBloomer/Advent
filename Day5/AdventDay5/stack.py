@@ -1,35 +1,27 @@
-#**************************
-# Loops through all the lines
-#***************************
-# Open the file in read mode
-f = open('input.txt', 'r')
-
-# Read the lines of the file
-lines = f.readlines()
-
-# Close the file
-f.close()
-
-def formatGame(gameLines):
-	rowCnt = 0
-	rows = []
-	rules = []
-
-	for line in gameLines:
-		if line == '\n':
-			continue
-
-		elif '[' in line:
-			row = [*line]
-			rows.append(row)
-			rowCnt += 1
-
-		elif line[1] == '1':
-			cols = line.split('   ')
-			cols[0] = '1'
-			cols[len(cols) - 1] = cols[len(cols) - 1].replace(' \n', '')
-			print(cols)
-
+#************************** 
+# Loops through all the lines 
+#*************************** 
+# Open the file in read mode 
+f = open('input.txt', 'r') 
+# Read the lines of the file 
+lines = f.readlines() 
+# Close the file 
+f.close() 
+def formatGame(gameLines): 
+	rowCnt = 0 
+	rows = [] 
+	rules = [] 
+	for line in gameLines: 
+		if line == '\n': 
+			continue 
+		elif '[' in line: 
+			row = [*line] 
+			rows.append(row) 
+			rowCnt += 1 
+		elif line[1] == '1': 
+			cols = line.split('   ') 
+			cols[0] = '1' 
+			cols[len(cols) - 1] = cols[len(cols) - 1].replace(' \n', '') 
 		elif 'move' in line:
 			l = line.split(' ')
 			l[5] = l[5].strip('\n')
@@ -74,16 +66,30 @@ def createCols(board):
 
 def move(cols, rules):
 	for r in rules:
-		size = int(r[0])
-		froCol = int(r[1])
-		toCol = int(r[2])
-
-		f = cols.get(froCol)
-		t = cols.get(toCol)
+		f = cols.get(int(r[1]))
+		t = cols.get(int(r[2]))
 		
+		m = f[0 : int(r[0])]
+		#m.reverse()
+
+		#add new column with removed members
+		del f[0 : int(r[0])]
+		cols[int(r[1])] = f	
+
+		#add new column with added members
+		cols[int(r[2])] = m + t 
+
+	sortString = ''
+	for v in cols.values():
+		try:
+			sortString = sortString + v[0]
+		except:
+			print("Not all columns have a top block")
+
+
+	return sortString 
 
 rules,board = formatGame(lines)
 myCols = createCols(board)
-for m,t in myCols.items():
-	print(m)
-	print(t)
+sort = move(myCols, rules)
+print(sort)
